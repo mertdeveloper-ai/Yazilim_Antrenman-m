@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MertiX Games - Akıllı Dükkan 👌</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
+        .ana-kart { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; margin-bottom: 30px; }
+        h2 { color: #2c3e50; }
+        #wallet-section { background-color: #e8f8f5; padding: 15px; border-radius: 10px; color: #16a085; font-size: 1.5rem; margin-bottom: 20px; font-weight: bold; }
+        .urun-vitrini { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+        .urun-kart { border: 1px solid #ddd; padding: 15px; border-radius: 10px; width: 180px; background: #fff; transition: 0.3s; }
+        .urun-kart img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 10px; }
+        button { width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; }
+        .btn-satinal { background-color: #3498db; color: white; }
+        .btn-satinal:hover { background-color: #2980b9; }
+        .btn-mod { background: #7f8c8d; color: white; width: auto; margin-bottom: 15px; }
+        /* --- GECE MODU PROFESYONEL AYARLAR --- */
+
+/* Arka planı daha asil bir koyu gri/siyah yapalım */
+body.dark-mode {
+    background-color: #121212 !important; 
+    color: #e0e0e0 !important;
+}
+
+/* Gece modunda ana kartın rengi */
+body.dark-mode .ana-kart {
+    background-color: #1e1e1e !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+}
+
+/* Ürün kartları gece modunda karanlıkta kaybolmasın */
+body.dark-mode .urun-kart {
+    background-color: #252525 !important;
+    border: 1px solid #333 !important;
+    color: #ffffff !important;
+}
+
+/* Yazıların okunabilirliğini garantileyelim */
+body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode small {
+    color: #ffffff !important;
+}
+
+/* Cüzdan bölümü gece modunda parlasın */
+body.dark-mode #wallet-section {
+    background-color: #1b2e1b !important;
+    color: #2ecc71 !important;
+}
+        /* --- 22. GÜN EFEKTLERİ --- */
+.urun-kart:hover {
+    transform: translateY(-8px); 
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2); 
+    transition: all 0.3s ease; 
+}
+
+.btn-satinal:active {
+    transform: scale(0.95); 
+}
+    </style>
+</head>
+<body>
+
+    <button class="btn-mod" onclick="moduDegistir()">☀️/🌙 Gece-Gündüz Modu</button>
+
+    <div class="ana-kart">
+        <div id="wallet-section">💰 Cüzdan: <span id="bakiye-miktari">1000</span> TL</div>
+        <div id="level-section" style="background: #2f3542; color: white; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 14px;">
+    ⭐ Seviye: <span id="level-miktari">1</span> | 
+    ✨ XP: <span id="xp-miktari">0</span> / 100
+</div>
+        <h2>MertiX Games Market</h2>
+        
+  <div id="market-konteynir" class="urun-vitrini"></div>      
+ </div>
+
+        <div id="mesajAlani"></div>
+
+   <div id="envanter-alani" style="margin-top:30px; border-top: 2px dashed #ccc; padding-top: 20px;">
+    <h3>🎒 Çantam</h3>
+    <div id="envanter-listesi" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        </div>
+</div>
+
+<button onclick="sepetiSifirla()" style="background:#e74c3c; color:white; margin-top:20px;">🧹 Her Şeyi Sıfırla</button>     
+</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
