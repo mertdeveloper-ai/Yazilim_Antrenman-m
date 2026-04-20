@@ -16,47 +16,21 @@
         .btn-satinal { background-color: #3498db; color: white; }
         .btn-satinal:hover { background-color: #2980b9; }
         .btn-mod { background: #7f8c8d; color: white; width: auto; margin-bottom: 15px; }
-        /* --- GECE MODU PROFESYONEL AYARLAR --- */
 
-/* Arka planı daha asil bir koyu gri/siyah yapalım */
-body.dark-mode {
-    background-color: #121212 !important; 
-    color: #e0e0e0 !important;
-}
+        /* --- GECE MODU --- */
+        body.dark-mode { background-color: #121212 !important; color: #e0e0e0 !important; }
+        body.dark-mode .ana-kart { background-color: #1e1e1e !important; }
+        body.dark-mode .urun-kart { background-color: #252525 !important; border: 1px solid #333 !important; color: #ffffff !important; }
+        body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode small { color: #ffffff !important; }
+        body.dark-mode #wallet-section { background-color: #1b2e1b !important; color: #2ecc71 !important; }
 
-/* Gece modunda ana kartın rengi */
-body.dark-mode .ana-kart {
-    background-color: #1e1e1e !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
-}
-
-/* Ürün kartları gece modunda karanlıkta kaybolmasın */
-body.dark-mode .urun-kart {
-    background-color: #252525 !important;
-    border: 1px solid #333 !important;
-    color: #ffffff !important;
-}
-
-/* Yazıların okunabilirliğini garantileyelim */
-body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode small {
-    color: #ffffff !important;
-}
-
-/* Cüzdan bölümü gece modunda parlasın */
-body.dark-mode #wallet-section {
-    background-color: #1b2e1b !important;
-    color: #2ecc71 !important;
-}
-        /* --- 22. GÜN EFEKTLERİ --- */
-.urun-kart:hover {
-    transform: translateY(-8px); 
-    box-shadow: 0 12px 25px rgba(0,0,0,0.2); 
-    transition: all 0.3s ease; 
-}
-
-.btn-satinal:active {
-    transform: scale(0.95); 
-}
+        /* --- XP BAR GÖRSEL AYARLARI --- */
+        .xp-container { background: #1e1e1e; border: 2px solid #00ffcc; padding: 15px; border-radius: 12px; width: 100%; max-width: 600px; margin-top: 20px; color: white; }
+        .xp-bar-bg { width: 100%; height: 15px; background: #333; border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffcc, #0077ff); box-shadow: 0 0 10px #00ffcc; transition: width 0.5s ease; }
+        
+        .urun-kart:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.2); transition: all 0.3s ease; }
+        .btn-satinal:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -64,28 +38,170 @@ body.dark-mode #wallet-section {
     <button class="btn-mod" onclick="moduDegistir()">☀️/🌙 Gece-Gündüz Modu</button>
 
     <div class="ana-kart">
-        <div id="wallet-section">💰 Cüzdan: <span id="bakiye-miktari">1000</span> TL</div>
+        <div id="wallet-section">💰 Cüzdan: <span id="bakiye-miktari">2000</span> TL</div>
         <div id="level-section" style="background: #2f3542; color: white; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 14px;">
-    ⭐ Seviye: <span id="level-miktari">1</span> | 
-    ✨ XP: <span id="xp-miktari">0</span> / 100
-</div>
-        <h2>MertiX Games Market</h2>
-        
-  <div id="market-konteynir" class="urun-vitrini"></div>      
- </div>
-
-        <div id="mesajAlani"></div>
-
-   <div id="envanter-alani" style="margin-top:30px; border-top: 2px dashed #ccc; padding-top: 20px;">
-    <h3>🎒 Çantam</h3>
-    <div id="envanter-listesi" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+            ⭐ Seviye: <span id="current-level">1</span> | 
+            ✨ XP: <span id="current-xp">0</span> / <span id="next-level-xp">100</span>
         </div>
-</div>
-
-<button onclick="sepetiSifirla()" style="background:#e74c3c; color:white; margin-top:20px;">🧹 Her Şeyi Sıfırla</button>     
-</div>
+        <h2>MertiX Games Market</h2>
+        <div id="market-konteynir" class="urun-vitrini"></div>      
     </div>
 
-    <script src="script.js"></script>
+    <div id="mesajAlani"></div>
+
+    <div id="envanter-alani" style="margin-top:30px; border-top: 2px dashed #ccc; padding-top: 20px;">
+        <h3>🎒 Çantam</h3>
+        <div id="envanter-listesi" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+    </div>
+
+    <button onclick="sepetiSifirla()" style="background: #e74c3c; color: white; margin-top: 20px;">🧹 Her Şeyi Sıfırla</button>
+
+    <div class="xp-container">
+        <div class="xp-info">
+            <span>Seviye: <span id="current-level-bar">1</span></span>
+            <span>XP: <span id="current-xp-bar">0</span> / <span id="next-level-xp-bar">100</span></span>
+        </div>
+        <div class="xp-bar-bg">
+            <div id="xp-progress" class="xp-bar-fill"></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. VERİLER VE DEĞİŞKENLER
+        let xp = Number(localStorage.getItem("mertiX_xp")) || 0;
+        let seviye = Number(localStorage.getItem("mertiX_seviye")) || 1;
+        let bakiye = localStorage.getItem("mertiX_bakiye") ? parseInt(localStorage.getItem("mertiX_bakiye")) : 2000;
+        let envanter = localStorage.getItem("mertiX_envanter") ? JSON.parse(localStorage.getItem("mertiX_envanter")) : [];
+        let xpToNextLevel = 100;
+
+        const urunler = [
+            { id: 1, ad: "Basketbol Topu", fiyat: 250, resim: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Basketball.png/200px-Basketball.png" },
+            { id: 2, ad: "Premium Saat", fiyat: 500, resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200" },
+            { id: 3, ad: "Kulaklık", fiyat: 750, resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" },
+            { id: 4, ad: "Gamer Kulaklık", fiyat: 1500, resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" },
+            { id: 5, ad: "Gaming Mouse", fiyat: 250, resim: "https://img.icons8.com/fluency/96/mouse.png" }
+        ];
+
+        // 2. ARAYÜZ GÜNCELLEME
+        function arayuzGuncelle() {
+            // Cüzdan ve Seviye Alanları
+            document.getElementById("bakiye-miktari").innerText = bakiye;
+            document.getElementById("current-level").innerText = seviye;
+            document.getElementById("current-xp").innerText = xp;
+            
+            // Alt XP Bar Alanları
+            document.getElementById("current-level-bar").innerText = seviye;
+            document.getElementById("current-xp-bar").innerText = xp;
+            document.getElementById("next-level-xp-bar").innerText = xpToNextLevel;
+            
+            // Barı İlerlet
+            let yuzde = (xp / xpToNextLevel) * 100;
+            document.getElementById("xp-progress").style.width = yuzde + "%";
+
+            localStorage.setItem("mertiX_bakiye", bakiye);
+            localStorage.setItem("mertiX_xp", xp);
+            localStorage.setItem("mertiX_seviye", seviye);
+        }
+
+        // 3. SATIN ALMA
+        function satinAl(id) {
+            const urun = urunler.find(u => u.id === id);
+            const mesaj = document.getElementById("mesajAlani");
+
+            if (bakiye >= urun.fiyat) {
+                bakiye -= urun.fiyat;
+                envanter.push(urun.ad);
+                xpKazan(25); // Her alışverişte 25 XP
+                
+                if(mesaj) {
+                    mesaj.innerText = `${urun.ad} alındı! 👌`;
+                    mesaj.style.color = "#27ae60";
+                }
+                arayuzGuncelle();
+                envanterGuncelle();
+                dukkaniYukle();
+            } else {
+                if(mesaj) {
+                    mesaj.innerText = "Para yetmedi hocam! ❌";
+                    mesaj.style.color = "#e74c3c";
+                }
+            }
+        }
+
+        // 4. XP SİSTEMİ
+        function xpKazan(miktar) {
+            xp += miktar;
+            if (xp >= xpToNextLevel) {
+                xp -= xpToNextLevel;
+                seviye++;
+                alert("TEBRİKLER! Seviye Atladın: " + seviye);
+            }
+            arayuzGuncelle();
+        }
+
+        // 5. EŞYA SATMA
+        function esyaSat(index) {
+            const satilanUrunAd = envanter[index];
+            const urun = urunler.find(u => u.ad === satilanUrunAd);
+            if (urun) {
+                bakiye += urun.fiyat;
+                envanter.splice(index, 1);
+                arayuzGuncelle();
+                envanterGuncelle();
+                dukkaniYukle();
+            }
+        }
+
+        // 6. GÖRÜNÜM FONKSİYONLARI
+        function dukkaniYukle() {
+            const marketAlani = document.getElementById("market-konteynir");
+            if(!marketAlani) return;
+            marketAlani.innerHTML = "";
+            urunler.forEach(urun => {
+                const yetersizBakiye = bakiye < urun.fiyat;
+                const butonOzellikleri = yetersizBakiye ? 'disabled style="background-color: #ccc;"' : '';
+                marketAlani.innerHTML += `
+                    <div class="urun-kart">
+                        <img src="${urun.resim}"><br>
+                        <h3>${urun.ad}</h3>
+                        <p>${urun.fiyat} TL</p>
+                        <button class="btn-satinal" onclick="satinAl(${urun.id})" ${butonOzellikleri}>Satın Al</button>
+                    </div>
+                `;
+            });
+        }
+
+        function envanterGuncelle() {
+            const envanterAlani = document.getElementById("envanter-listesi");
+            if (!envanterAlani) return;
+            envanterAlani.innerHTML = "";
+            envanter.forEach((urunAd, index) => {
+                const urun = urunler.find(u => u.ad === urunAd);
+                if (urun) {
+                    envanterAlani.innerHTML += `
+                        <div style="background: white; padding: 10px; border-radius: 8px; border: 1px solid #ddd; text-align: center; width: 85px;">
+                            <img src="${urun.resim}" width="45"><br>
+                            <button onclick="esyaSat(${index})" style="background: #ff4757; color: white; border: none; padding: 2px; font-size: 10px; border-radius: 4px; cursor: pointer; width: 100%;">Sat</button>
+                        </div>
+                    `;
+                }
+            });
+            localStorage.setItem("mertiX_envanter", JSON.stringify(envanter));
+        }
+
+        function sepetiSifirla() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        function moduDegistir() {
+            document.body.classList.toggle("dark-mode");
+        }
+
+        // BAŞLAT
+        arayuzGuncelle();
+        envanterGuncelle();
+        dukkaniYukle();
+    </script>
 </body>
 </html>
