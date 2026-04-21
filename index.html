@@ -128,16 +128,23 @@
             }
         }
 
-        // 4. XP SİSTEMİ
-        function xpKazan(miktar) {
-            xp += miktar;
-            if (xp >= xpToNextLevel) {
-                xp -= xpToNextLevel;
-                seviye++;
-                alert("TEBRİKLER! Seviye Atladın: " + seviye);
-            }
-            arayuzGuncelle();
-        }
+// 4. XP SİSTEMİ
+function xpKazan(miktar) {
+    xp += miktar;
+    
+    // Seviye atlama kontrolü burada başlar
+    if (xp >= xpToNextLevel) {
+        xp -= xpToNextLevel;
+        seviye++;
+        bakiye += 500; // İşte patronun 500 TL bonusu! 💰
+        alert("LEVEL UP! 500 TL Bonus kazandın. Yeni Seviye: " + seviye);
+    }
+    // Kontrol biter, her durumda arayüzü güncelleriz
+    arayuzGuncelle();
+}
+    
+         
+    
 
         // 5. EŞYA SATMA
         function esyaSat(index) {
