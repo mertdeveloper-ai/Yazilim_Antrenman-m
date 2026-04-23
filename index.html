@@ -74,13 +74,49 @@
         let envanter = localStorage.getItem("mertiX_envanter") ? JSON.parse(localStorage.getItem("mertiX_envanter")) : [];
         let xpToNextLevel = 100;
 
-        const urunler = [
-            { id: 1, ad: "Basketbol Topu", fiyat: 250, resim: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Basketball.png/200px-Basketball.png" },
-            { id: 2, ad: "Premium Saat", fiyat: 500, resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200" },
-            { id: 3, ad: "Kulaklık", fiyat: 750, resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" },
-            { id: 4, ad: "Gamer Kulaklık", fiyat: 1500, resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" },
-            { id: 5, ad: "Gaming Mouse", fiyat: 250, resim: "https://img.icons8.com/fluency/96/mouse.png" }
-        ];
+        
+ const urunler = [
+    { 
+        id: 1, 
+        ad: "Basketbol Topu", 
+        fiyat: 250, 
+        stok: 5, 
+        resim: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=200&h=200&fit=crop", 
+        xp: 25 
+    },
+    { 
+        id: 2, 
+        ad: "Premium Saat", 
+        fiyat: 500, 
+        stok: 3, 
+        resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop", 
+        xp: 50 
+    },
+    { 
+        id: 3, 
+        ad: "Kulaklık", 
+        fiyat: 750, 
+        stok: 2, 
+        resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop", 
+        xp: 75 
+    },
+    { 
+        id: 4, 
+        ad: "Gamer Kulaklık", 
+        fiyat: 1500, 
+        stok: 1, 
+        resim: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=200&h=200&fit=crop", 
+        xp: 150 
+    },
+    { 
+        id: 5, 
+        ad: "Gaming Mouse", 
+        fiyat: 250, 
+        stok: 10, 
+        resim: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200&h=200&fit=crop", 
+        xp: 25 
+    }
+];       ;
 
         // 2. ARAYÜZ GÜNCELLEME
         function arayuzGuncelle() {
@@ -103,31 +139,29 @@
             localStorage.setItem("mertiX_seviye", seviye);
         }
 
-        // 3. SATIN ALMA
-        function satinAl(id) {
-            const urun = urunler.find(u => u.id === id);
-            const mesaj = document.getElementById("mesajAlani");
+// 3. SATIN ALMA
+function satinAl(id) {
+    let urun = urunler.find(u => u.id === id);
 
-            if (bakiye >= urun.fiyat) {
-                bakiye -= urun.fiyat;
-                envanter.push(urun.ad);
-                xpKazan(25); // Her alışverişte 25 XP
-                
-                if(mesaj) {
-                    mesaj.innerText = `${urun.ad} alındı! 👌`;
-                    mesaj.style.color = "#27ae60";
-                }
-                arayuzGuncelle();
-                envanterGuncelle();
-                dukkaniYukle();
-            } else {
-                if(mesaj) {
-                    mesaj.innerText = "Para yetmedi hocam! ❌";
-                    mesaj.style.color = "#e74c3c";
-                }
-            }
-        }
-
+    if (bakiye >= urun.fiyat && urun.stok > 0) {
+        bakiye -= urun.fiyat;
+        urun.stok -= 1; // Sayı azaldı
+        
+        envanter.push(urun.ad);
+        xpKazan(10); 
+        
+        arayuzGuncelle();
+        envanterGuncelle();
+        dukkaniYukle(); // İŞTE BU SATIR EKSİKTİ! Ekranı tazeler.
+        
+        // localStorageKaydet() sende hata verebilir, 
+        // çünkü fonksiyonun adı arayuzGuncelle içinde zaten hallediliyor.
+    } else if (urun.stok <= 0) {
+        alert("Bu ürün tükendi patron, bir sonrakine artık!");
+    } else {
+        alert("Para yetmedi hocam! ❌");
+    }
+}
 // 4. XP SİSTEMİ
 function xpKazan(miktar) {
     xp += miktar;
@@ -160,23 +194,30 @@ function xpKazan(miktar) {
         }
 
         // 6. GÖRÜNÜM FONKSİYONLARI
+// 6. GÖRÜNÜM FONKSİYONLARI
         function dukkaniYukle() {
             const marketAlani = document.getElementById("market-konteynir");
-            if(!marketAlani) return;
+            if (!marketAlani) return;
             marketAlani.innerHTML = "";
+
             urunler.forEach(urun => {
                 const yetersizBakiye = bakiye < urun.fiyat;
-                const butonOzellikleri = yetersizBakiye ? 'disabled style="background-color: #ccc;"' : '';
+                // STOK KONTROLÜ: Parası olsa bile stok 0 ise butonu kapat
+                const butonKilitli = yetersizBakiye || urun.stok <= 0;
+                const butonYazisi = urun.stok <= 0 ? "Tükendi" : "Satın Al";
+                const butonStili = butonKilitli ? 'disabled style="background-color: #ccc;"' : '';
+
                 marketAlani.innerHTML += `
                     <div class="urun-kart">
                         <img src="${urun.resim}"><br>
                         <h3>${urun.ad}</h3>
                         <p>${urun.fiyat} TL</p>
-                        <button class="btn-satinal" onclick="satinAl(${urun.id})" ${butonOzellikleri}>Satın Al</button>
+                        <p>Stok: ${urun.stok}</p>
+                        <button class="btn-satinal" onclick="satinAl(${urun.id})" ${butonStili}>${butonYazisi}</button>
                     </div>
                 `;
             });
-        }
+        } // dukkaniYukle BURADA BİTMELİ
 
         function envanterGuncelle() {
             const envanterAlani = document.getElementById("envanter-listesi");
@@ -196,7 +237,7 @@ function xpKazan(miktar) {
             localStorage.setItem("mertiX_envanter", JSON.stringify(envanter));
         }
 
-        function sepetiSifirla() {
+     function sepetiSifirla() {
             localStorage.clear();
             location.reload();
         }
