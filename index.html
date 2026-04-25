@@ -183,8 +183,8 @@ function xpKazan(miktar) {
                         <h3>${urun.ad}</h3>
                         <p>${urun.fiyat} TL</p>
                         <p>Stok: ${urun.stok}</p>
-                        <button class="btn-satinal" onclick="satinAl(${urun.id})" ${butonStili}>${butonYazisi}</button>
-                    </div>
+<button class="btn-satinal" onclick="satinAl(${urun.id})" ${butonKilitli ? 'disabled' : ''} style="${butonKilitli ? 'background-color: #ccc; cursor: not-allowed;' : ''}">${butonYazisi}</button>
+                        </div>
                 `;
             });
         } // dukkaniYukle BURADA BİTMELİ
