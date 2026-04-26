@@ -151,17 +151,40 @@ function xpKazan(miktar) {
     
 
         // 5. EŞYA SATMA
-        function esyaSat(index) {
-            const satilanUrunAd = envanter[index];
-            const urun = urunler.find(u => u.ad === satilanUrunAd);
-            if (urun) {
-                bakiye += urun.fiyat;
-                envanter.splice(index, 1);
-                arayuzGuncelle();
-                envanterGuncelle();
-                dukkaniYukle();
-            }
-        }
+function esyaSat(index) {
+    // 1. Envanterdeki ürünün ismini alıyoruz
+    let satilacakUrunAd = envanter[index]; 
+    
+    // 2. Bu isme göre dükkan listesinden (urunler) ürünün orijinal verisini buluyoruz
+    let urunVerisi = urunler.find(u => u.ad === satilacakUrunAd);
+    
+    if (urunVerisi) {
+        // 3. EKONOMİ: %20 kesinti ile parayı iade et (Örn: 1000'lik saati 800'e geri alır)
+        let iadeTutari = Math.floor(urunVerisi.fiyat * 0.8);
+        bakiye += iadeTutari;
+        
+        // 4. STOK YÖNETİMİ: Sattığın ürün dükkanın rafına (stok) geri döner
+        urunVerisi.stok += 1;
+        
+        // 5. ENVANTERDEN SİL: Listeden o ürünü çıkar
+        envanter.splice(index, 1);
+        
+        // 6. HER ŞEYİ TAZELE: Bu komutlar dükkanı ve bakiyeyi anında günceller
+        arayuzGuncelle();
+        envanterGuncelle();
+        dukkaniYukle(); // ÖNEMLİ: "Tükendi" butonunun tekrar açılmasını sağlar!
+        
+        console.log(`${satilacakUrunAd} dükkana geri satıldı. Yeni bakiye: ${bakiye}`);
+        window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Sayfayı sertçe değil, yumuşak bir şekilde yukarı kaydırır
+    });
+
+    // alert istersen en son verebilirsin
+    // alert("Eşya satıldı!"); 
+}
+    }
+
 
         // 6. GÖRÜNÜM FONKSİYONLARI
 // 6. GÖRÜNÜM FONKSİYONLARI
