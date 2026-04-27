@@ -53,6 +53,12 @@
         <h3>🎒 Çantam</h3>
         <div id="envanter-listesi" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
     </div>
+<div class="kategori-butonlari" style="margin: 10px 0;">
+    <button onclick="kategoriyeGoreGoster('Hepsi')">Hepsi</button>
+    <button onclick="kategoriyeGoreGoster('Elektronik')">Elektronik</button>
+    <button onclick="kategoriyeGoreGoster('Gıda')">Gıda</button>
+</div>
+
 
     <button onclick="sepetiSifirla()" style="background: #e74c3c; color: white; margin-top: 20px;">🧹 Her Şeyi Sıfırla</button>
 
@@ -67,25 +73,29 @@
     </div>
 
     <script>
-        // 1. VERİLER VE DEĞİŞKENLER
-        let xp = Number(localStorage.getItem("mertiX_xp")) || 0;
-        let seviye = Number(localStorage.getItem("mertiX_seviye")) || 1;
-        let bakiye = localStorage.getItem("mertiX_bakiye") ? parseInt(localStorage.getItem("mertiX_bakiye")) : 2000;
-        let envanter = localStorage.getItem("mertiX_envanter") ? JSON.parse(localStorage.getItem("mertiX_envanter")) : [];
-        let xpToNextLevel = 100;
 
-      // ÖNCE VARSAYILAN LİSTEYİ OLUŞTURUYORUZ (Senin resimlerin burada kalıyor)
+// ==// ==========================================
+// ==========================================
+// ==========================================
+// 1. VERİLER VE DEĞİŞKENLER (GARANTİ RESİMLİ)
+// ==========================================
+let xp = Number(localStorage.getItem("mertiX_xp")) || 0;
+let seviye = Number(localStorage.getItem("mertiX_seviye")) || 1;
+let bakiye = localStorage.getItem("mertiX_bakiye") ? parseInt(localStorage.getItem("mertiX_bakiye")) : 10000;
+let envanter = localStorage.getItem("mertiX_envanter") ? JSON.parse(localStorage.getItem("mertiX_envanter")) : [];
+let xpToNextLevel = 100;
+
 const varsayilanUrunler = [
-    { id: 1, ad: "Basketbol Topu", fiyat: 250, stok: 5, resim: "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=200&h=200&fit=crop", xp: 25 },
-    { id: 2, ad: "Premium Saat", fiyat: 500, stok: 3, resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop", xp: 50 },
-    { id: 3, ad: "Kulaklık", fiyat: 750, stok: 2, resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop", xp: 75 },
-    { id: 4, ad: "Gamer Kulaklık", fiyat: 1500, stok: 1, resim: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=200&h=200&fit=crop", xp: 150 },
-    { id: 5, ad: "Gaming Mouse", fiyat: 250, stok: 10, resim: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200&h=200&fit=crop", xp: 25 }
+    { id: 1, ad: "Gamer Kulaklık", fiyat: 1500, stok: 5, kategori: "Elektronik", resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" },
+    { id: 2, ad: "Mekanik Klavye", fiyat: 2000, stok: 3, kategori: "Elektronik", resim: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=400" },
+    { id: 3, ad: "Gaming Mouse", fiyat: 1200, stok: 10, kategori: "Elektronik", resim: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=400" },
+    { id: 4, ad: "27' Gaming Monitör", fiyat: 4500, stok: 4, kategori: "Elektronik", resim: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400" },
+    { id: 5, ad: "Akıllı Saat", fiyat: 3500, stok: 2, kategori: "Aksesuar", resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" },
+    // ENERJİ İÇECEĞİ İÇİN YENİ GARANTİ LİNK
+    { id: 6, ad: "Protein Tozu", fiyat: 850, stok: 20, kategori: "Gıda", resim: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=400" }
 ];
 
-// SONRA HAFIZAYA BAKIYORUZ: Varsa hafızadakini, yoksa yukarıdakini al diyoruz
-let urunler = localStorage.getItem("mertiX_urunler") ? JSON.parse(localStorage.getItem("mertiX_urunler")) : varsayilanUrunler;  
-
+let urunler = localStorage.getItem("mertiX_urunler") ? JSON.parse(localStorage.getItem("mertiX_urunler")) : varsayilanUrunler;
 
         // 2. ARAYÜZ GÜNCELLEME
         function arayuzGuncelle() {
@@ -186,31 +196,41 @@ function esyaSat(index) {
     }
 
 
+    function kategoriyeGoreGoster(secilenKategori) {
+    if (secilenKategori === 'Hepsi') {
+        dukkaniYukle(urunler); // Eğer hepsi seçildiyse orijinal listeyi bas
+    } else {
+        // filter metodu: Ürünler listesini gez, sadece kategorisi uyanları yeni bir listeye al
+        const suzulenUrunler = urunler.filter(urun => urun.kategori === secilenKategori);
+        dukkaniYukle(suzulenUrunler); // Sadece süzülenleri ekrana bas
+    }
+}
+
+
         // 6. GÖRÜNÜM FONKSİYONLARI
 // 6. GÖRÜNÜM FONKSİYONLARI
-        function dukkaniYukle() {
-            const marketAlani = document.getElementById("market-konteynir");
-            if (!marketAlani) return;
-            marketAlani.innerHTML = "";
+function dukkaniYukle(liste = urunler) { // Eğer bir liste gönderilmezse varsayılan olarak urunler'i kullan
+    const marketAlani = document.getElementById("market-konteynir");
+    if (!marketAlani) return;
+    marketAlani.innerHTML = "";
 
-            urunler.forEach(urun => {
-                const yetersizBakiye = bakiye < urun.fiyat;
-                // STOK KONTROLÜ: Parası olsa bile stok 0 ise butonu kapat
-                const butonKilitli = yetersizBakiye || urun.stok <= 0;
-                const butonYazisi = urun.stok <= 0 ? "Tükendi" : "Satın Al";
-                const butonStili = butonKilitli ? 'disabled style="background-color: #ccc;"' : '';
+    liste.forEach(urun => {
+        const yetersizBakiye = bakiye < urun.fiyat;
+        const butonKilitli = yetersizBakiye || urun.stok <= 0;
+        const butonYazisi = urun.stok <= 0 ? "Tükendi" : "Satın Al";
 
-                marketAlani.innerHTML += `
-                    <div class="urun-kart">
-                        <img src="${urun.resim}"><br>
-                        <h3>${urun.ad}</h3>
-                        <p>${urun.fiyat} TL</p>
-                        <p>Stok: ${urun.stok}</p>
-<button class="btn-satinal" onclick="satinAl(${urun.id})" ${butonKilitli ? 'disabled' : ''} style="${butonKilitli ? 'background-color: #ccc; cursor: not-allowed;' : ''}">${butonYazisi}</button>
-                        </div>
-                `;
-            });
-        } // dukkaniYukle BURADA BİTMELİ
+        marketAlani.innerHTML += `
+            <div class="urun-kart">
+                <img src="${urun.resim}"><br>
+                <h3>${urun.ad}</h3>
+                <p>${urun.fiyat} TL</p>
+                <p>Stok: ${urun.stok}</p>
+                <button class="btn-satinal" onclick="satinAl(${urun.id})" ${butonKilitli ? 'disabled' : ''} 
+                style="${butonKilitli ? 'background-color: #ccc; cursor: not-allowed;' : ''}">${butonYazisi}</button>
+            </div>
+        `;
+    });
+}
 
         function envanterGuncelle() {
             const envanterAlani = document.getElementById("envanter-listesi");
