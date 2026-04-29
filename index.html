@@ -53,12 +53,11 @@
         <h3>🎒 Çantam</h3>
         <div id="envanter-listesi" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
     </div>
-<div class="kategori-butonlari" style="margin: 10px 0;">
-    <button onclick="kategoriyeGoreGoster('Hepsi')">Hepsi</button>
-    <button onclick="kategoriyeGoreGoster('Elektronik')">Elektronik</button>
-    <button onclick="kategoriyeGoreGoster('Gıda')">Gıda</button>
+<div class="kategoriler">
+    <button onclick="kategoriFiltrele('Hepsi')">Hepsi</button>
+    <button onclick="kategoriFiltrele('Gıda')">Gıda</button>
+    <button onclick="kategoriFiltrele('Elektronik')">Elektronik</button>
 </div>
-
 
     <button onclick="sepetiSifirla()" style="background: #e74c3c; color: white; margin-top: 20px;">🧹 Her Şeyi Sıfırla</button>
 
@@ -196,16 +195,18 @@ function esyaSat(index) {
     }
 
 
-    function kategoriyeGoreGoster(secilenKategori) {
+  
+// 1. Kategori Filtreleme Fonksiyonu
+function kategoriyeGoreGoster(secilenKategori) {
+    // tumUrunler yerine doğrudan global "urunler" değişkenini kullanalım 
+    // ki satın alma yapınca azalan stoklar filtrelemede de güncel kalsın.
     if (secilenKategori === 'Hepsi') {
-        dukkaniYukle(urunler); // Eğer hepsi seçildiyse orijinal listeyi bas
+        dukkaniYukle(urunler);
     } else {
-        // filter metodu: Ürünler listesini gez, sadece kategorisi uyanları yeni bir listeye al
         const suzulenUrunler = urunler.filter(urun => urun.kategori === secilenKategori);
-        dukkaniYukle(suzulenUrunler); // Sadece süzülenleri ekrana bas
+        dukkaniYukle(suzulenUrunler);
     }
 }
-
 
         // 6. GÖRÜNÜM FONKSİYONLARI
 // 6. GÖRÜNÜM FONKSİYONLARI
@@ -258,7 +259,28 @@ function dukkaniYukle(liste = urunler) { // Eğer bir liste gönderilmezse varsa
         function moduDegistir() {
             document.body.classList.toggle("dark-mode");
         }
+// 1. Kategori Filtreleme Fonksiyonu
+function kategoriyeGoreGoster(secilenKategori) {
+    // Ürünleri kendi belirlediğin anahtar isimle (mertiX_urunler) çekiyoruz
+    let tumUrunler = JSON.parse(localStorage.getItem("mertiX_urunler")) || varsayilanUrunler;
 
+    if (secilenKategori === 'Hepsi') {
+        dukkaniYukle(tumUrunler);
+    } else {
+        const suzulenUrunler = tumUrunler.filter(urun => urun.kategori === secilenKategori);
+        dukkaniYukle(suzulenUrunler);
+    }
+}
+
+// 2. HTML'deki butonlar için yardımcı köprü
+function kategoriFiltrele(kategoriIsmi) {
+    kategoriyeGoreGoster(kategoriIsmi);
+}
+
+// 3. Sayfa yüklendiğinde dükkanı aç
+document.addEventListener("DOMContentLoaded", () => {
+    kategoriyeGoreGoster('Hepsi'); 
+});
         // BAŞLAT
         arayuzGuncelle();
         envanterGuncelle();
