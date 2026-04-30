@@ -85,15 +85,13 @@ let envanter = localStorage.getItem("mertiX_envanter") ? JSON.parse(localStorage
 let xpToNextLevel = 100;
 
 const varsayilanUrunler = [
-    { id: 1, ad: "Gamer Kulaklık", fiyat: 1500, stok: 5, kategori: "Elektronik", resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" },
-    { id: 2, ad: "Mekanik Klavye", fiyat: 2000, stok: 3, kategori: "Elektronik", resim: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=400" },
-    { id: 3, ad: "Gaming Mouse", fiyat: 1200, stok: 10, kategori: "Elektronik", resim: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=400" },
-    { id: 4, ad: "27' Gaming Monitör", fiyat: 4500, stok: 4, kategori: "Elektronik", resim: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400" },
-    { id: 5, ad: "Akıllı Saat", fiyat: 3500, stok: 2, kategori: "Aksesuar", resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" },
-    // ENERJİ İÇECEĞİ İÇİN YENİ GARANTİ LİNK
-    { id: 6, ad: "Protein Tozu", fiyat: 850, stok: 20, kategori: "Gıda", resim: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=400" }
+    { id: 1, ad: "Gamer Kulaklık", fiyat: 1500, stok: 5, kategori: "Elektronik", xp: 25, resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" },
+    { id: 2, ad: "Mekanik Klavye", fiyat: 2000, stok: 3, kategori: "Elektronik", xp: 30, resim: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=400" },
+    { id: 3, ad: "Gaming Mouse", fiyat: 1200, stok: 10, kategori: "Elektronik", xp: 20, resim: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=400" },
+    { id: 4, ad: "27' Gaming Monitör", fiyat: 4500, stok: 4, kategori: "Elektronik", xp: 50, resim: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400" },
+    { id: 5, ad: "Akıllı Saat", fiyat: 3500, stok: 2, kategori: "Aksesuar", xp: 40, resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" },
+    { id: 6, ad: "Protein Tozu", fiyat: 850, stok: 20, kategori: "Gıda", xp: 15, resim: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=400" }
 ];
-
 let urunler = localStorage.getItem("mertiX_urunler") ? JSON.parse(localStorage.getItem("mertiX_urunler")) : varsayilanUrunler;
 
         // 2. ARAYÜZ GÜNCELLEME
@@ -127,7 +125,8 @@ function satinAl(id) {
         urun.stok -= 1; // Sayı azaldı
         
         envanter.push(urun.ad);
-        xpKazan(10); 
+       xpKazan(urun.xp || 10);
+       document.getElementById("mesajAlani").innerHTML = `<p style="color:green">✔ ${urun.ad} başarıyla alındı! +${urun.xp} XP kazandın.</p>`;
         
         arayuzGuncelle();
         envanterGuncelle();
