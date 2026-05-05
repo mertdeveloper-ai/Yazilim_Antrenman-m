@@ -126,8 +126,14 @@ function satinAl(id) {
         
         envanter.push(urun.ad);
        xpKazan(urun.xp || 10);
-       document.getElementById("mesajAlani").innerHTML = `<p style="color:green">✔ ${urun.ad} başarıyla alındı! +${urun.xp} XP kazandın.</p>`;
-        
+        document.getElementById("mesajAlani").innerHTML = `
+    <div style="background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; margin: 20px 0; border-radius: 4px;">
+        <strong style="color: #2e7d32;">✅ İşlem Başarılı!</strong>
+        <p style="margin: 5px 0 0 0; color: #1b5e20;">
+            ${urun.ad} başarıyla alındı! <strong>+${urun.xp} XP</strong> kazandın.
+        </p>
+    </div>
+`;
         arayuzGuncelle();
         envanterGuncelle();
         dukkaniYukle(); // İŞTE BU SATIR EKSİKTİ! Ekranı tazeler.
