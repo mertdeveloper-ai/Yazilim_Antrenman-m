@@ -50,8 +50,11 @@
     <div id="mesajAlani"></div>
 
     <div id="envanter-alani" style="margin-top:30px; border-top: 2px dashed #ccc; padding-top: 20px;">
-        <h3>🎒 Çantam</h3>
-        <div id="envanter-listesi" style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;"></div>
+<div id="envanter-alani" style="margin-top:30px; border-top: 2px dashed #ccc; padding-top: 20px;">
+   <h3>🎒 Çantam</h3>
+   <ul id="envanter-listesi" style="list-style: none; padding: 0; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+      </ul>
+</div>
     </div>
 <div class="kategoriler">
     <button onclick="kategoriFiltrele('Hepsi')">Hepsi</button>
@@ -123,6 +126,12 @@ function satinAl(id) {
     if (bakiye >= urun.fiyat && urun.stok > 0) {
         bakiye -= urun.fiyat;
         urun.stok -= 1; // Sayı azaldı
+        // Envantere ekle
+document.getElementById("envanter-listesi").innerHTML += `
+    <li style="background: #f0f0f0; padding: 5px 15px; border-radius: 20px; border: 1px solid #ddd;">
+        ${urun.ad}
+    </li>
+`;
         
         envanter.push(urun.ad);
        xpKazan(urun.xp || 10);
