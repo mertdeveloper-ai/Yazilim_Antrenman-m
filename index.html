@@ -3,71 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MertiX Games - Akıllı Dükkan 👌</title>
+    <title>MertiX Games - Profesyonel Dükkan 🚀</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
-        .ana-kart { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; margin-bottom: 30px; }
-        h2 { color: #2c3e50; }
+        .ana-kart { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; margin-bottom: 20px; }
         #wallet-section { background-color: #e8f8f5; padding: 15px; border-radius: 10px; color: #16a085; font-size: 1.5rem; margin-bottom: 20px; font-weight: bold; }
         .urun-vitrini { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-        .urun-kart { border: 1px solid #ddd; padding: 15px; border-radius: 10px; width: 180px; background: #fff; transition: 0.3s; }
-        .urun-kart img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 10px; }
-        button { width: 100%; padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 5px; }
-        .btn-satinal { background-color: #3498db; color: white; }
-        .btn-satinal:hover { background-color: #2980b9; }
-        .btn-mod { background: #7f8c8d; color: white; width: auto; margin-bottom: 15px; }
-
-        /* --- GECE MODU --- */
-        body.dark-mode { background-color: #121212 !important; color: #e0e0e0 !important; }
-        body.dark-mode .ana-kart { background-color: #1e1e1e !important; }
-        body.dark-mode .urun-kart { background-color: #252525 !important; border: 1px solid #333 !important; color: #ffffff !important; }
-        body.dark-mode h2, body.dark-mode h3, body.dark-mode p, body.dark-mode small { color: #ffffff !important; }
-        body.dark-mode #wallet-section { background-color: #1b2e1b !important; color: #2ecc71 !important; }
-
-        /* --- XP BAR GÖRSEL AYARLARI --- */
-        .xp-container { background: #1e1e1e; border: 2px solid #00ffcc; padding: 15px; border-radius: 12px; width: 100%; max-width: 600px; margin-top: 20px; color: white; }
-        .xp-bar-bg { width: 100%; height: 15px; background: #333; border-radius: 10px; margin-top: 10px; overflow: hidden; }
-        .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffcc, #0077ff); box-shadow: 0 0 10px #00ffcc; transition: width 0.5s ease; }
+        .urun-kart { border: 1px solid #ddd; padding: 15px; border-radius: 10px; width: 180px; background: #fff; transition: 0.3s; text-align: center; }
+        .urun-kart img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 10px; border-radius: 5px; }
+        button { padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn-satinal { background-color: #3498db; color: white; width: 100%; }
+        .btn-satinal:hover:not(:disabled) { background-color: #2980b9; transform: scale(1.05); }
+        .btn-satinal:disabled { background-color: #ccc; cursor: not-allowed; }
+        .kategoriler { margin: 20px 0; display: flex; gap: 10px; }
+        .btn-kat { background: #95a5a6; color: white; }
         
-        .urun-kart:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.2); transition: all 0.3s ease; }
-        .btn-satinal:active { transform: scale(0.95); }
+        /* Gece Modu */
+        body.dark-mode { background-color: #121212; color: #e0e0e0; }
+        body.dark-mode .ana-kart { background-color: #1e1e1e; color: white; }
+        body.dark-mode .urun-kart { background-color: #252525; border-color: #333; }
+
+        /* XP Bar */
+        .xp-container { background: #1e1e1e; border: 2px solid #00ffcc; padding: 15px; border-radius: 12px; width: 100%; max-width: 600px; color: white; }
+        .xp-bar-bg { width: 100%; height: 15px; background: #333; border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffcc, #0077ff); transition: width 0.5s ease; }
+        
+        #envanter-listesi { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; min-height: 50px; }
     </style>
 </head>
 <body>
 
-    <button class="btn-mod" onclick="moduDegistir()">☀️/🌙 Gece-Gündüz Modu</button>
+    <button class="btn-kat" onclick="moduDegistir()" style="margin-bottom: 10px;">☀️/🌙 Mod Değiştir</button>
 
     <div class="ana-kart">
-        <div id="wallet-section">💰 Cüzdan: <span id="bakiye-miktari">2000</span> TL</div>
-        <div id="level-section" style="background: #2f3542; color: white; padding: 8px; border-radius: 8px; margin-top: 5px; font-size: 14px;">
-            ⭐ Seviye: <span id="current-level">1</span> | 
-            ✨ XP: <span id="current-xp">0</span> / <span id="next-level-xp">100</span>
+        <div id="wallet-section">💰 Cüzdan: <span id="bakiye-miktari">0</span> TL</div>
+        <div id="level-section" style="background: #2f3542; color: white; padding: 10px; border-radius: 8px;">
+            ⭐ Seviye: <span id="current-level">1</span> | ✨ XP: <span id="current-xp">0</span> / 100
         </div>
-        <h2>MertiX Games Market</h2>
-        <div id="market-konteynir" class="urun-vitrini"></div>      
+
+        <div class="kategoriler">
+            <button class="btn-kat" onclick="kategoriFiltrele('Hepsi')">Hepsi</button>
+            <button class="btn-kat" onclick="kategoriFiltrele('Elektronik')">Elektronik</button>
+            <button class="btn-kat" onclick="kategoriFiltrele('Gıda')">Gıda</button>
+        </div>
+
+        <div id="market-konteynir" class="urun-vitrini">
+            </div>
+        
+        <div id="mesajAlani"></div>
     </div>
 
-    <div id="mesajAlani"></div>
-
-    <div id="envanter-alani" style="margin-top:30px; border-top: 2px dashed #ccc; padding-top: 20px;">
-<div id="envanter-alani" style="margin-top:30px; border-top: 2px dashed #ccc; padding-top: 20px;">
-   <h3>🎒 Çantam</h3>
-   <ul id="envanter-listesi" style="list-style: none; padding: 0; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-      </ul>
-</div>
+    <div class="ana-kart">
+        <h3>🎒 Çantam (Envanter)</h3>
+        <div id="envanter-listesi"></div>
+        <button onclick="sepetiSifirla()" style="background: #e74c3c; color: white; margin-top: 20px; width: auto;">🧹 Verileri Sıfırla</button>
     </div>
-<div class="kategoriler">
-    <button onclick="kategoriFiltrele('Hepsi')">Hepsi</button>
-    <button onclick="kategoriFiltrele('Gıda')">Gıda</button>
-    <button onclick="kategoriFiltrele('Elektronik')">Elektronik</button>
-</div>
-
-    <button onclick="sepetiSifirla()" style="background: #e74c3c; color: white; margin-top: 20px;">🧹 Her Şeyi Sıfırla</button>
 
     <div class="xp-container">
-        <div class="xp-info">
+        <div style="display: flex; justify-content: space-between;">
             <span>Seviye: <span id="current-level-bar">1</span></span>
-            <span>XP: <span id="current-xp-bar">0</span> / <span id="next-level-xp-bar">100</span></span>
+            <span>XP: <span id="current-xp-bar">0</span> / 100</span>
         </div>
         <div class="xp-bar-bg">
             <div id="xp-progress" class="xp-bar-fill"></div>
@@ -75,230 +70,132 @@
     </div>
 
     <script>
+        // --- 1. VERİLER ---
+        const varsayilanUrunler = [
+            { id: 1, ad: "Gamer Kulaklık", fiyat: 1500, stok: 5, kategori: "Elektronik", xp: 25, resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" },
+            { id: 2, ad: "Mekanik Klavye", fiyat: 2000, stok: 3, kategori: "Elektronik", xp: 30, resim: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=200" },
+            { id: 3, ad: "Gaming Mouse", fiyat: 1200, stok: 10, kategori: "Elektronik", xp: 20, resim: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=200" },
+            { id: 4, ad: "Gaming Monitör", fiyat: 4500, stok: 4, kategori: "Elektronik", xp: 50, resim: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=200" },
+            { id: 5, ad: "Akıllı Saat", fiyat: 3500, stok: 2, kategori: "Elektronik", xp: 40, resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200" },
+            { id: 6, ad: "Protein Tozu", fiyat: 850, stok: 20, kategori: "Gıda", xp: 15, resim: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=200" }
+        ];
 
-// ==// ==========================================
-// ==========================================
-// ==========================================
-// 1. VERİLER VE DEĞİŞKENLER (GARANTİ RESİMLİ)
-// ==========================================
-let xp = Number(localStorage.getItem("mertiX_xp")) || 0;
-let seviye = Number(localStorage.getItem("mertiX_seviye")) || 1;
-let bakiye = localStorage.getItem("mertiX_bakiye") ? parseInt(localStorage.getItem("mertiX_bakiye")) : 10000;
-let envanter = localStorage.getItem("mertiX_envanter") ? JSON.parse(localStorage.getItem("mertiX_envanter")) : [];
-let xpToNextLevel = 100;
+        let xp = Number(localStorage.getItem("mertiX_xp")) || 0;
+        let seviye = Number(localStorage.getItem("mertiX_seviye")) || 1;
+        let bakiye = Number(localStorage.getItem("mertiX_bakiye")) || 10000;
+        let envanter = JSON.parse(localStorage.getItem("mertiX_envanter")) || [];
+        let urunler = JSON.parse(localStorage.getItem("mertiX_urunler")) || varsayilanUrunler;
+        let xpToNextLevel = 100;
 
-const varsayilanUrunler = [
-    { id: 1, ad: "Gamer Kulaklık", fiyat: 1500, stok: 5, kategori: "Elektronik", xp: 25, resim: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" },
-    { id: 2, ad: "Mekanik Klavye", fiyat: 2000, stok: 3, kategori: "Elektronik", xp: 30, resim: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=400" },
-    { id: 3, ad: "Gaming Mouse", fiyat: 1200, stok: 10, kategori: "Elektronik", xp: 20, resim: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=400" },
-    { id: 4, ad: "27' Gaming Monitör", fiyat: 4500, stok: 4, kategori: "Elektronik", xp: 50, resim: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=400" },
-    { id: 5, ad: "Akıllı Saat", fiyat: 3500, stok: 2, kategori: "Aksesuar", xp: 40, resim: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" },
-    { id: 6, ad: "Protein Tozu", fiyat: 850, stok: 20, kategori: "Gıda", xp: 15, resim: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?w=400" }
-];
-let urunler = localStorage.getItem("mertiX_urunler") ? JSON.parse(localStorage.getItem("mertiX_urunler")) : varsayilanUrunler;
-
-        // 2. ARAYÜZ GÜNCELLEME
+        // --- 2. FONKSİYONLAR ---
         function arayuzGuncelle() {
-            // Cüzdan ve Seviye Alanları
             document.getElementById("bakiye-miktari").innerText = bakiye;
             document.getElementById("current-level").innerText = seviye;
             document.getElementById("current-xp").innerText = xp;
-            
-            // Alt XP Bar Alanları
             document.getElementById("current-level-bar").innerText = seviye;
             document.getElementById("current-xp-bar").innerText = xp;
-            document.getElementById("next-level-xp-bar").innerText = xpToNextLevel;
             
-            // Barı İlerlet
             let yuzde = (xp / xpToNextLevel) * 100;
             document.getElementById("xp-progress").style.width = yuzde + "%";
 
             localStorage.setItem("mertiX_bakiye", bakiye);
             localStorage.setItem("mertiX_xp", xp);
             localStorage.setItem("mertiX_seviye", seviye);
+            localStorage.setItem("mertiX_envanter", JSON.stringify(envanter));
             localStorage.setItem("mertiX_urunler", JSON.stringify(urunler));
         }
 
-// 3. SATIN ALMA
-function satinAl(id) {
-    let urun = urunler.find(u => u.id === id);
-
-    if (bakiye >= urun.fiyat && urun.stok > 0) {
-        bakiye -= urun.fiyat;
-        urun.stok -= 1; // Sayı azaldı
-        // Envantere ekle
-document.getElementById("envanter-listesi").innerHTML += `
-    <li style="background: #f0f0f0; padding: 5px 15px; border-radius: 20px; border: 1px solid #ddd;">
-        ${urun.ad}
-    </li>
-`;
-        
-        envanter.push(urun.ad);
-       xpKazan(urun.xp || 10);
-        document.getElementById("mesajAlani").innerHTML = `
-    <div style="background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; margin: 20px 0; border-radius: 4px;">
-        <strong style="color: #2e7d32;">✅ İşlem Başarılı!</strong>
-        <p style="margin: 5px 0 0 0; color: #1b5e20;">
-            ${urun.ad} başarıyla alındı! <strong>+${urun.xp} XP</strong> kazandın.
-        </p>
-    </div>
-`;
-        arayuzGuncelle();
-        envanterGuncelle();
-        dukkaniYukle(); // İŞTE BU SATIR EKSİKTİ! Ekranı tazeler.
-        
-        // localStorageKaydet() sende hata verebilir, 
-        // çünkü fonksiyonun adı arayuzGuncelle içinde zaten hallediliyor.
-    } else if (urun.stok <= 0) {
-        alert("Bu ürün tükendi patron, bir sonrakine artık!");
-    } else {
-        alert("Para yetmedi hocam! ❌");
-    }
-}
-// 4. XP SİSTEMİ
-function xpKazan(miktar) {
-    xp += miktar;
-    
-    // Seviye atlama kontrolü burada başlar
-    if (xp >= xpToNextLevel) {
-        xp -= xpToNextLevel;
-        seviye++;
-        bakiye += 500; // İşte patronun 500 TL bonusu! 💰
-        alert("LEVEL UP! 500 TL Bonus kazandın. Yeni Seviye: " + seviye);
-    }
-    // Kontrol biter, her durumda arayüzü güncelleriz
-    arayuzGuncelle();
-}
-    
-         
-    
-
-        // 5. EŞYA SATMA
-function esyaSat(index) {
-    // 1. Envanterdeki ürünün ismini alıyoruz
-    let satilacakUrunAd = envanter[index]; 
-    
-    // 2. Bu isme göre dükkan listesinden (urunler) ürünün orijinal verisini buluyoruz
-    let urunVerisi = urunler.find(u => u.ad === satilacakUrunAd);
-    
-    if (urunVerisi) {
-        // 3. EKONOMİ: %20 kesinti ile parayı iade et (Örn: 1000'lik saati 800'e geri alır)
-        let iadeTutari = Math.floor(urunVerisi.fiyat * 0.8);
-        bakiye += iadeTutari;
-        
-        // 4. STOK YÖNETİMİ: Sattığın ürün dükkanın rafına (stok) geri döner
-        urunVerisi.stok += 1;
-        
-        // 5. ENVANTERDEN SİL: Listeden o ürünü çıkar
-        envanter.splice(index, 1);
-        
-        // 6. HER ŞEYİ TAZELE: Bu komutlar dükkanı ve bakiyeyi anında günceller
-        arayuzGuncelle();
-        envanterGuncelle();
-        dukkaniYukle(); // ÖNEMLİ: "Tükendi" butonunun tekrar açılmasını sağlar!
-        
-        console.log(`${satilacakUrunAd} dükkana geri satıldı. Yeni bakiye: ${bakiye}`);
-        window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // Sayfayı sertçe değil, yumuşak bir şekilde yukarı kaydırır
-    });
-
-    // alert istersen en son verebilirsin
-    // alert("Eşya satıldı!"); 
-}
-    }
-
-
-  
-// 1. Kategori Filtreleme Fonksiyonu
-function kategoriyeGoreGoster(secilenKategori) {
-    // tumUrunler yerine doğrudan global "urunler" değişkenini kullanalım 
-    // ki satın alma yapınca azalan stoklar filtrelemede de güncel kalsın.
-    if (secilenKategori === 'Hepsi') {
-        dukkaniYukle(urunler);
-    } else {
-        const suzulenUrunler = urunler.filter(urun => urun.kategori === secilenKategori);
-        dukkaniYukle(suzulenUrunler);
-    }
-}
-
-        // 6. GÖRÜNÜM FONKSİYONLARI
-// 6. GÖRÜNÜM FONKSİYONLARI
-function dukkaniYukle(liste = urunler) { // Eğer bir liste gönderilmezse varsayılan olarak urunler'i kullan
-    const marketAlani = document.getElementById("market-konteynir");
-    if (!marketAlani) return;
-    marketAlani.innerHTML = "";
-
-    liste.forEach(urun => {
-        const yetersizBakiye = bakiye < urun.fiyat;
-        const butonKilitli = yetersizBakiye || urun.stok <= 0;
-        const butonYazisi = urun.stok <= 0 ? "Tükendi" : "Satın Al";
-
-        marketAlani.innerHTML += `
-            <div class="urun-kart">
-                <img src="${urun.resim}"><br>
-                <h3>${urun.ad}</h3>
-                <p>${urun.fiyat} TL</p>
-                <p>Stok: ${urun.stok}</p>
-                <button class="btn-satinal" onclick="satinAl(${urun.id})" ${butonKilitli ? 'disabled' : ''} 
-                style="${butonKilitli ? 'background-color: #ccc; cursor: not-allowed;' : ''}">${butonYazisi}</button>
-            </div>
-        `;
-    });
-}
+        function dukkaniYukle(liste = urunler) {
+            const market = document.getElementById("market-konteynir");
+            market.innerHTML = "";
+            liste.forEach(urun => {
+                const kilitli = bakiye < urun.fiyat || urun.stok <= 0;
+                market.innerHTML += `
+                    <div class="urun-kart">
+                        <img src="${urun.resim}">
+                        <h3>${urun.ad}</h3>
+                        <p><strong>${urun.fiyat} TL</strong></p>
+                        <p><small>Stok: ${urun.stok}</small></p>
+                        <button class="btn-satinal" onclick="satinAl(${urun.id})" ${kilitli ? 'disabled' : ''}>
+                            ${urun.stok > 0 ? 'Satın Al' : 'Tükendi'}
+                        </button>
+                    </div>
+                `;
+            });
+        }
 
         function envanterGuncelle() {
-            const envanterAlani = document.getElementById("envanter-listesi");
-            if (!envanterAlani) return;
-            envanterAlani.innerHTML = "";
-            envanter.forEach((urunAd, index) => {
-                const urun = urunler.find(u => u.ad === urunAd);
-                if (urun) {
-                    envanterAlani.innerHTML += `
-                        <div style="background: white; padding: 10px; border-radius: 8px; border: 1px solid #ddd; text-align: center; width: 85px;">
-                            <img src="${urun.resim}" width="45"><br>
-                            <button onclick="esyaSat(${index})" style="background: #ff4757; color: white; border: none; padding: 2px; font-size: 10px; border-radius: 4px; cursor: pointer; width: 100%;">Sat</button>
-                        </div>
-                    `;
-                }
+            const alan = document.getElementById("envanter-listesi");
+            alan.innerHTML = "";
+            envanter.forEach((ad, index) => {
+                const orijinal = varsayilanUrunler.find(u => u.ad === ad);
+                alan.innerHTML += `
+                    <div style="background: #eee; padding: 10px; border-radius: 8px; text-align: center; width: 80px;">
+                        <img src="${orijinal ? orijinal.resim : ''}" width="40"><br>
+                        <button onclick="esyaSat(${index})" style="background:#e74c3c; color:white; font-size:10px; padding:3px; margin-top:5px; width:100%; border-radius:3px;">Sat</button>
+                    </div>
+                `;
             });
-            localStorage.setItem("mertiX_envanter", JSON.stringify(envanter));
         }
 
-     function sepetiSifirla() {
-            localStorage.clear();
-            location.reload();
+        function satinAl(id) {
+            let urun = urunler.find(u => u.id === id);
+            if (bakiye >= urun.fiyat && urun.stok > 0) {
+                bakiye -= urun.fiyat;
+                urun.stok--;
+                envanter.push(urun.ad);
+                xpKazan(urun.xp);
+                
+                document.getElementById("mesajAlani").innerHTML = `
+                    <div style="background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 10px; margin: 15px 0; border-radius: 4px; color: #1b5e20;">
+                        ✅ <strong>${urun.ad}</strong> alındı! +${urun.xp} XP kazandın.
+                    </div>
+                `;
+                
+                arayuzGuncelle();
+                envanterGuncelle();
+                dukkaniYukle();
+            }
         }
 
-        function moduDegistir() {
-            document.body.classList.toggle("dark-mode");
+        function esyaSat(index) {
+            let ad = envanter[index];
+            let urun = urunler.find(u => u.ad === ad);
+            if (urun) {
+                bakiye += Math.floor(urun.fiyat * 0.8);
+                urun.stok++;
+                envanter.splice(index, 1);
+                arayuzGuncelle();
+                envanterGuncelle();
+                dukkaniYukle();
+            }
         }
-// 1. Kategori Filtreleme Fonksiyonu
-function kategoriyeGoreGoster(secilenKategori) {
-    // Ürünleri kendi belirlediğin anahtar isimle (mertiX_urunler) çekiyoruz
-    let tumUrunler = JSON.parse(localStorage.getItem("mertiX_urunler")) || varsayilanUrunler;
 
-    if (secilenKategori === 'Hepsi') {
-        dukkaniYukle(tumUrunler);
-    } else {
-        const suzulenUrunler = tumUrunler.filter(urun => urun.kategori === secilenKategori);
-        dukkaniYukle(suzulenUrunler);
-    }
-}
+        function xpKazan(miktar) {
+            xp += miktar;
+            if (xp >= xpToNextLevel) {
+                xp -= xpToNextLevel;
+                seviye++;
+                bakiye += 500;
+                alert("LEVEL UP! 🚀 500 TL Bonus kazandın!");
+            }
+            arayuzGuncelle();
+        }
 
-// 2. HTML'deki butonlar için yardımcı köprü
-function kategoriFiltrele(kategoriIsmi) {
-    kategoriyeGoreGoster(kategoriIsmi);
-}
+        function kategoriFiltrele(kat) {
+            if (kat === 'Hepsi') dukkaniYukle(urunler);
+            else dukkaniYukle(urunler.filter(u => u.kategori === kat));
+        }
 
-// 3. Sayfa yüklendiğinde dükkanı aç
-document.addEventListener("DOMContentLoaded", () => {
-    kategoriyeGoreGoster('Hepsi'); 
-});
+        function moduDegistir() { document.body.classList.toggle("dark-mode"); }
+        function sepetiSifirla() { localStorage.clear(); location.reload(); }
+
         // BAŞLAT
-        arayuzGuncelle();
-        envanterGuncelle();
-        dukkaniYukle();
+        document.addEventListener("DOMContentLoaded", () => {
+            dukkaniYukle();
+            arayuzGuncelle();
+            envanterGuncelle();
+        });
     </script>
 </body>
 </html>
