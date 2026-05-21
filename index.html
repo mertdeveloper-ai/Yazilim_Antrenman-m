@@ -6,29 +6,43 @@
     <title>MertiX Games - Profesyonel Dükkan 🚀</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
-        .ana-kart { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; margin-bottom: 20px; }
+        .ana-kart { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 650px; text-align: center; margin-bottom: 20px; box-sizing: border-box; }
         #wallet-section { background-color: #e8f8f5; padding: 15px; border-radius: 10px; color: #16a085; font-size: 1.5rem; margin-bottom: 20px; font-weight: bold; }
-        .urun-vitrini { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-        .urun-kart { border: 1px solid #ddd; padding: 15px; border-radius: 10px; width: 180px; background: #fff; transition: 0.3s; text-align: center; }
+        .urun-vitrini { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px; width: 100%; max-width: 650px; scroll-margin-top: 20px; }
+        .urun-kart { border: 1px solid #ddd; padding: 15px; border-radius: 10px; width: 180px; background: #fff; transition: 0.3s; text-align: center; color: #333; }
         .urun-kart img { width: 100%; height: 100px; object-fit: contain; margin-bottom: 10px; border-radius: 5px; }
         button { padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
         .btn-satinal { background-color: #3498db; color: white; width: 100%; }
         .btn-satinal:hover:not(:disabled) { background-color: #2980b9; transform: scale(1.05); }
         .btn-satinal:disabled { background-color: #ccc; cursor: not-allowed; }
-        .kategoriler { margin: 20px 0; display: flex; gap: 10px; }
+        .kategoriler { margin: 20px 0; display: flex; gap: 10px; justify-content: center; }
         .btn-kat { background: #95a5a6; color: white; }
         
-        /* Gece Modu */
+        /* Gece Modu Stilleri */
         body.dark-mode { background-color: #121212; color: #e0e0e0; }
         body.dark-mode .ana-kart { background-color: #1e1e1e; color: white; }
-        body.dark-mode .urun-kart { background-color: #252525; border-color: #333; }
+        body.dark-mode .urun-kart { background-color: #252525; border-color: #333; color: white; }
+        body.dark-mode #arama-kutusu, body.dark-mode #sirala-secenek, body.dark-mode .form-grup input, body.dark-mode #yeni-kategori { background-color: #2c2c2c; color: white; border-color: #444; }
+        body.dark-mode .admin-panel-kart { border-color: #3498db !important; }
 
         /* XP Bar */
-        .xp-container { background: #1e1e1e; border: 2px solid #00ffcc; padding: 15px; border-radius: 12px; width: 100%; max-width: 600px; color: white; }
+        .xp-container { background: #1e1e1e; border: 2px solid #00ffcc; padding: 15px; border-radius: 12px; width: 100%; max-width: 650px; color: white; box-sizing: border-box; margin-bottom: 20px; }
         .xp-bar-bg { width: 100%; height: 15px; background: #333; border-radius: 10px; margin-top: 10px; overflow: hidden; }
         .xp-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, #00ffcc, #0077ff); transition: width 0.5s ease; }
         
         #envanter-listesi { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 15px; min-height: 50px; }
+
+        /* Gelişmiş Arama ve Sıralama Yerleşimi */
+        .arama-kapsayici { display: flex; gap: 15px; justify-content: space-between; align-items: center; }
+        #arama-kutusu { flex: 2; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; }
+        #sirala-secenek { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; background: white; font-size: 14px; }
+
+        /* Admin Paneli Düzenlemeleri */
+        .admin-panel-kart { border: 2px dashed #3498db !important; }
+        .form-grup { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 15px; justify-content: center; }
+        .form-grup input, .form-grup select { flex: 1; min-width: 130px; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px; }
+        .ekle-buton { flex: 1; min-width: 150px; background-color: #2ecc71; color: white; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        .ekle-buton:hover { background-color: #27ae60; }
     </style>
 </head>
 <body>
@@ -45,43 +59,32 @@
             <button class="btn-kat" onclick="kategoriFiltrele('Hepsi')">Hepsi</button>
             <button class="btn-kat" onclick="kategoriFiltrele('Elektronik')">Elektronik</button>
             <button class="btn-kat" onclick="kategoriFiltrele('Gıda')">Gıda</button>
-            <div class="ana-kart" style="padding: 15px; margin-bottom: 20px;">
-    <input type="text" id="arama-kutusu" oninput="dukkaniFiltreleVeSirala()" placeholder="🔍 Ürün adı ara..." style="padding: 8px; width: 60%; border-radius: 5px; border: 1px solid #ddd; margin-right: 10px;">
-    
-    <select id="sirala-secenek" onchange="dukkaniFiltreleVeSirala()" style="padding: 8px; border-radius: 5px; border: 1px solid #ddd;">
-        <option value="varsayilan">Sıralama Seçin</option>
-        <option value="ucuz">Ucuzdan Pahalıya</option>
-        <option value="pahali">Pahalıdan Ucuza</option>
-    </select>
-</div>
-
-<div class="ana-kart" style="border: 1px dashed #3498db; background: #fdfefe;">
-    <h3>🛠️ Yeni Ürün Ekleme Paneli</h3>
-    <div style="display: flex; flex-direction: column; gap: 10px; max-width: 400px; margin: 0 auto;">
-        <input type="text" id="yeni-ad" placeholder="Ürün Adı" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
-        <input type="number" id="yeni-fiyat" placeholder="Fiyat (TL)" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
-        <input type="number" id="yeni-stok" placeholder="Stok Adedi" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
-        
-        <select id="yeni-kategori" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
-            <option value="Elektronik">Elektronik</option>
-            <option value="Gıda">Gıda</option>
-        </select>
-        
-        <button onclick="yeniUrunEkle()" style="background: #2ecc71; color: white;">➕ Dükkana Ürün Ekle</button>
-    </div>
-</div>
         </div>
 
-        <div id="market-konteynir" class="urun-vitrini">
-            </div>
-        
-        <div id="mesajAlani"></div>
+        <div class="arama-kapsayici">
+            <input type="text" id="arama-kutusu" oninput="dukkaniFiltreleVeSirala()" placeholder="🔍 Ürün adı ara...">
+            <select id="sirala-secenek" onchange="dukkaniFiltreleVeSirala()">
+                <option value="varsayilan">Sıralama Seçin</option>
+                <option value="ucuz">Ucuzdan Pahalıya</option>
+                <option value="pahali">Pahalıdan Ucuza</option>
+            </select>
+        </div>
     </div>
 
-    <div class="ana-kart">
-        <h3>🎒 Çantam (Envanter)</h3>
-        <div id="envanter-listesi"></div>
-        <button onclick="sepetiSifirla()" style="background: #e74c3c; color: white; margin-top: 20px; width: auto;">🧹 Verileri Sıfırla</button>
+    <div class="ana-kart admin-panel-kart">
+        <h3 style="margin: 0; color: #3498db;">🛠️ Yeni Ürün Ekleme Paneli</h3>
+        <div class="form-grup">
+            <input type="text" id="yeni-ad" placeholder="Ürün Adı">
+            <input type="number" id="yeni-fiyat" placeholder="Fiyat (TL)">
+            <input type="number" id="yeni-stok" placeholder="Stok Adedi">
+            
+            <select id="yeni-kategori">
+                <option value="Elektronik">Elektronik</option>
+                <option value="Gıda">Gıda</option>
+            </select>
+            
+            <button onclick="yeniUrunEkle()" class="ekle-buton">➕ Dükkana Ürün Ekle</button>
+        </div>
     </div>
 
     <div class="xp-container">
@@ -92,6 +95,14 @@
         <div class="xp-bar-bg">
             <div id="xp-progress" class="xp-bar-fill"></div>
         </div>
+    </div>
+
+    <div id="market-konteynir" class="urun-vitrini"></div>
+
+    <div class="ana-kart" style="margin-top: 20px;">
+        <h3>🎒 Çantam (Envanter)</h3>
+        <div id="envanter-listesi"></div>
+        <button onclick="sepetiSifirla()" style="background: #e74c3c; color: white; margin-top: 20px; width: auto;">🧹 Verileri Sıfırla</button>
     </div>
 
     <script>
@@ -109,7 +120,12 @@
         let seviye = Number(localStorage.getItem("mertiX_seviye")) || 1;
         let bakiye = Number(localStorage.getItem("mertiX_bakiye")) || 10000;
         let envanter = JSON.parse(localStorage.getItem("mertiX_envanter")) || [];
-        let urunler = JSON.parse(localStorage.getItem("mertiX_urunler")) || varsayilanUrunler;
+        
+        let urunler = JSON.parse(localStorage.getItem("mertiX_urunler"));
+        if (!urunler || urunler.length === 0) {
+            urunler = varsayilanUrunler;
+        }
+        
         let xpToNextLevel = 100;
 
         // --- 2. FONKSİYONLAR ---
@@ -132,6 +148,7 @@
 
         function dukkaniYukle(liste = urunler) {
             const market = document.getElementById("market-konteynir");
+            if (!market) return;
             market.innerHTML = "";
             liste.forEach(urun => {
                 const kilitli = bakiye < urun.fiyat || urun.stok <= 0;
@@ -151,16 +168,31 @@
 
         function envanterGuncelle() {
             const alan = document.getElementById("envanter-listesi");
+            if (!alan) return;
             alan.innerHTML = "";
             envanter.forEach((ad, index) => {
-                const orijinal = varsayilanUrunler.find(u => u.ad === ad);
+                const orijinal = urunler.find(u => u.ad === ad) || varsayilanUrunler.find(u => u.ad === ad);
+                const resimYolu = orijinal ? orijinal.resim : "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=50";
+                
                 alan.innerHTML += `
-                    <div style="background: #eee; padding: 10px; border-radius: 8px; text-align: center; width: 80px;">
-                        <img src="${orijinal ? orijinal.resim : ''}" width="40"><br>
+                    <div style="background: #eee; padding: 10px; border-radius: 8px; text-align: center; width: 80px; color: #333;">
+                        <img src="${resimYolu}" width="40" height="40" style="object-fit:cover; border-radius:3px;"><br>
                         <button onclick="esyaSat(${index})" style="background:#e74c3c; color:white; font-size:10px; padding:3px; margin-top:5px; width:100%; border-radius:3px;">Sat</button>
                     </div>
                 `;
             });
+        }
+
+        // YENİ UX DOKUNUŞU: Sayfanın en üstüne (Cüzdan ve Seviye alanına) pürüzsüz kaydırma
+        function sayfaEnUsteKaydir() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function vitrineKaydir() {
+            const marketKonteynir = document.getElementById("market-konteynir");
+            if (marketKonteynir) {
+                marketKonteynir.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         function satinAl(id) {
@@ -169,13 +201,8 @@
                 bakiye -= urun.fiyat;
                 urun.stok--;
                 envanter.push(urun.ad);
-                xpKazan(urun.xp);
                 
-                document.getElementById("mesajAlani").innerHTML = `
-                    <div style="background: #e8f5e9; border-left: 5px solid #2e7d32; padding: 10px; margin: 15px 0; border-radius: 4px; color: #1b5e20;">
-                        ✅ <strong>${urun.ad}</strong> alındı! +${urun.xp} XP kazandın.
-                    </div>
-                `;
+                xpKazan(urun.xp);
                 
                 arayuzGuncelle();
                 envanterGuncelle();
@@ -190,9 +217,11 @@
                 bakiye += Math.floor(urun.fiyat * 0.8);
                 urun.stok++;
                 envanter.splice(index, 1);
+                
                 arayuzGuncelle();
                 envanterGuncelle();
                 dukkaniYukle();
+                sayfaEnUsteKaydir(); // Satma işleminde doğrudan cüzdana ve paraya odaklar
             }
         }
 
@@ -210,69 +239,61 @@
         function kategoriFiltrele(kat) {
             if (kat === 'Hepsi') dukkaniYukle(urunler);
             else dukkaniYukle(urunler.filter(u => u.kategori === kat));
+            vitrineKaydir();
         }
-        // 1. Gelişmiş Arama ve Sıralama Fonksiyonu
-function dukkaniFiltreleVeSirala() {
-    const aramaMetni = document.getElementById("arama-kutusu").value.toLowerCase();
-    const siralaSecenek = document.getElementById("sirala-secenek").value;
 
-    // Önce arama metnine göre ürünleri süzüyoruz (includes metodu)
-    let filtrelenmişUrunler = urunler.filter(urun => {
-        return urun.ad.toLowerCase().includes(aramaMetni);
-    });
+        function dukkaniFiltreleVeSirala() {
+            const aramaMetni = document.getElementById("arama-kutusu").value.toLowerCase();
+            const siralaSecenek = document.getElementById("sirala-secenek").value;
 
-    // Sonra seçilen kritere göre sıralıyoruz (sort metodu)
-    if (siralaSecenek === "ucuz") {
-        filtrelenmişUrunler.sort((a, b) => a.fiyat - b.fiyat); // Küçükten büyüğe
-    } else if (siralaSecenek === "pahali") {
-        filtrelenmişUrunler.sort((a, b) => b.fiyat - a.fiyat); // Büyükten küçüğe
-    }
+            let filtrelenmişUrunler = urunler.filter(urun => {
+                return urun.ad.toLowerCase().includes(aramaMetni);
+            });
 
-    // Oluşan yeni listeyi dükkan vitrinine basıyoruz
-    dukkaniYukle(filtrelenmişUrunler);
-}
+            if (siralaSecenek === "ucuz") {
+                filtrelenmişUrunler.sort((a, b) => a.fiyat - b.fiyat);
+            } else if (siralaSecenek === "pahali") {
+                filtrelenmişUrunler.sort((a, b) => b.fiyat - a.fiyat);
+            }
 
-// 2. Admin Paneli: Dükkana Dinamik Ürün Ekleme
-function yeniUrunEkle() {
-    const ad = document.getElementById("yeni-ad").value.trim();
-    const fiyat = Number(document.getElementById("yeni-fiyat").value);
-    const stok = Number(document.getElementById("yeni-stok").value);
-    const kategori = document.getElementById("yeni-kategori").value;
+            dukkaniYukle(filtrelenmişUrunler);
+        }
 
-    // Basit bir boş kutu kontrolü yapalım
-    if (!ad || fiyat <= 0 || stok <= 0) {
-        alert("Lütfen tüm alanları doğru şekilde doldur patron! ❌");
-        return;
-    }
+        function yeniUrunEkle() {
+            const ad = document.getElementById("yeni-ad").value.trim();
+            const fiyat = Number(document.getElementById("yeni-fiyat").value);
+            const stok = Number(document.getElementById("yeni-stok").value);
+            const kategori = document.getElementById("yeni-kategori").value;
 
-    // Benzersiz bir ID üretelim (Mevcut en büyük id'nin bir fazlası)
-    const yeniId = urunler.length > 0 ? Math.max(...urunler.map(u => u.id)) + 1 : 1;
+            if (!ad || fiyat <= 0 || stok <= 0) {
+                alert("Lütfen tüm alanları doğru şekilde doldur patron! ❌");
+                return;
+            }
 
-    // Yeni ürün objesini oluşturuyoruz (Varsayılan rastgele bir resim linkiyle)
-    const yeniUrun = {
-        id: yeniId,
-        ad: ad,
-        fiyat: fiyat,
-        stok: stok,
-        kategori: kategori,
-        xp: Math.floor(fiyat * 0.02), // Fiyatın %2'si kadar XP versin, adil olsun!
-        resim: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200" // Gaming kapak resmi
-    };
+            const yeniId = urunler.length > 0 ? Math.max(...urunler.map(u => u.id)) + 1 : 1;
 
-    // JavaScript'teki ana listemize ürünü itiyoruz (push)
-    urunler.push(yeniUrun);
+            const yeniUrun = {
+                id: yeniId,
+                ad: ad,
+                fiyat: fiyat,
+                stok: stok,
+                kategori: kategori,
+                xp: Math.floor(fiyat * 0.02),
+                resim: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=200"
+            };
 
-    // Kutuları temizleyelim
-    document.getElementById("yeni-ad").value = "";
-    document.getElementById("yeni-fiyat").value = "";
-    document.getElementById("yeni-stok").value = "";
+            urunler.push(yeniUrun);
 
-    // Mesaj verelim ve hafıza dahil her şeyi güncelleyelim
-    alert(`✅ ${ad} dükkan raflarına başarıyla eklendi!`);
-    
-    arayuzGuncelle(); // LocalStorage'a kaydeder
-    dukkaniYukle();   // Vitrini tazeler
-}
+            document.getElementById("yeni-ad").value = "";
+            document.getElementById("yeni-fiyat").value = "";
+            document.getElementById("yeni-stok").value = "";
+
+            alert(`✅ ${ad} dükkan raflarına başarıyla eklendi!`);
+            
+            arayuzGuncelle();
+            dukkaniYukle();
+            vitrineKaydir();
+        }
 
         function moduDegistir() { document.body.classList.toggle("dark-mode"); }
         function sepetiSifirla() { localStorage.clear(); location.reload(); }
